@@ -13,6 +13,7 @@ class Image extends Component {
         className="img-responsive"
         src={this.props.src}
         alt={this.props.alt}
+        width={this.props.size}
       />
     );
   }

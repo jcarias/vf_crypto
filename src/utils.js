@@ -46,13 +46,18 @@ export const Currencies = {
   }
 };
 
-export const formatter = (currency = "USD") => {
+export const currencyFormatter = (currency = "USD") => {
   const myCurr = Currencies[currency];
-  console.log(myCurr);
 
-  return new Intl.NumberFormat("en-US", {
+  return new Intl.NumberFormat(undefined, {
     style: "decimal",
     currency: myCurr.code,
     minimumFractionDigits: myCurr.decimal_digits
   });
 };
+
+export const percentFormatter = number =>
+  Number(number / 100).toLocaleString(undefined, {
+    style: "percent",
+    minimumFractionDigits: 2
+  });

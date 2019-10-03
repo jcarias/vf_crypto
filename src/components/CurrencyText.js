@@ -1,5 +1,5 @@
 import React from "react";
-import { Currencies, formatter } from "../utils";
+import { Currencies, currencyFormatter } from "../utils";
 import styled, { css } from "styled-components";
 
 const Text = styled.span`
@@ -23,7 +23,7 @@ const CurrencyText = ({ currency = "EUR", value = 0, ...otherProps }) => {
       <Text currency className="currency">
         {Currencies[currency].symbol}
       </Text>
-      <Text className>{formatter(currency).format(value)}</Text>
+      <Text className>{currencyFormatter(currency).format(value)}</Text>
     </Container>
   );
 };

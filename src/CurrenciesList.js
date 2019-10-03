@@ -1,11 +1,8 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-
-import Image from "./Image";
-import { formatter } from "./utils";
 import Grid from "@material-ui/core/Grid";
 import ListHeader from "./components/ListHeader";
 import CurrenciesTable from "./components/CurrenciesTable";
+import Axios from "axios";
 
 const CURRENCIES_LIMIT = 10;
 
@@ -30,18 +27,16 @@ class CurrenciesList extends Component {
 
   fetchData = () => {
     this.setState({ loading: true });
-    fetch(
+    Axios.get(
       `https://api.coinmarketcap.com/v1/ticker/?limit=${CURRENCIES_LIMIT}&convert=${this.state.currentCurrency}`
-    )
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-        this.setState({
-          loading: false,
-          data,
-          timeStamp: new Date().getTime()
-        });
+    ).then(response => {
+      console.log(response);
+      this.setState({
+        loading: false,
+        data: response.data,
+        timeStamp: new Date().getTime()
       });
+    });
   };
   handleCurrencyChange = newCurrency => {
     if (newCurrency !== this.state.currentCurrency) {

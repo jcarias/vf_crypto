@@ -9,15 +9,17 @@ import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 
 import Image from "../Image";
-
 import CurrencyText from "./CurrencyText";
+import VarianceText from "./VarianceText";
+import { Grid } from "@material-ui/core";
 
 const CurrenciesTable = ({ currenciesList, currency, ...otherProps }) => {
+  console.log(currenciesList);
   return (
     <Table>
       <TableHead>
         <TableRow>
-          <TableCell colSpan={3}>Crypto currency</TableCell>
+          <TableCell colSpan={2}>Crypto currency</TableCell>
           <TableCell>Price</TableCell>
           <TableCell>Market Cap</TableCell>
           <TableCell>24H Change</TableCell>
@@ -35,13 +37,20 @@ const CurrenciesTable = ({ currenciesList, currency, ...otherProps }) => {
             >
               <TableCell>{cryptoCurr.rank}</TableCell>
               <TableCell>
-                <Image
-                  src={`https://cryptoicons.org/api/icon/${cryptoCurr.symbol.toLowerCase()}/32`}
-                  fallBackSrc={`https://cryptoicons.org/api/icon/generic/32`}
-                  alt={cryptoCurr.symbol}
-                />
+                <Grid container alignItems="center" spacing={1}>
+                  <Grid item>
+                    <Image
+                      src={`https://cryptoicons.org/api/icon/${cryptoCurr.symbol.toLowerCase()}/32`}
+                      fallBackSrc={`https://cryptoicons.org/api/icon/generic/32`}
+                      alt={cryptoCurr.symbol}
+                      size={24}
+                    />
+                  </Grid>
+                  <Grid item xs>
+                    {cryptoCurr.name}
+                  </Grid>
+                </Grid>
               </TableCell>
-              <TableCell>{cryptoCurr.name}</TableCell>
               <TableCell>
                 <CurrencyText
                   currency={currency}
@@ -52,8 +61,11 @@ const CurrenciesTable = ({ currenciesList, currency, ...otherProps }) => {
                 <CurrencyText
                   currency={currency}
                   value={cryptoCurr[`market_cap_${currency.toLowerCase()}`]}
-                  style={{ fontSize: "1.5em" }}
+                  style={{ fontSize: "1.1em" }}
                 ></CurrencyText>
+              </TableCell>
+              <TableCell>
+                <VarianceText value={cryptoCurr.percent_change_24h} />
               </TableCell>
             </TableRow>
           ))}
