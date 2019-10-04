@@ -55,13 +55,13 @@ const CurrenciesTable = ({ currenciesList, currency, ...otherProps }) => {
                 <CurrencyText
                   currency={currency}
                   value={cryptoCurr[`price_${currency.toLowerCase()}`]}
+                  style={{ fontSize: "1.1em" }}
                 ></CurrencyText>
               </TableCell>
               <TableCell>
                 <CurrencyText
                   currency={currency}
                   value={cryptoCurr[`market_cap_${currency.toLowerCase()}`]}
-                  style={{ fontSize: "1.1em" }}
                 ></CurrencyText>
               </TableCell>
               <TableCell>

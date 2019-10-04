@@ -12,6 +12,8 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   color: green;
+  font-size: 0.8em;
+  font-weight: 600;
   ${props =>
     props.negative &&
     css`

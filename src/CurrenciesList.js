@@ -5,6 +5,7 @@ import CurrenciesTable from "./components/CurrenciesTable";
 import Axios from "axios";
 
 const CURRENCIES_LIMIT = 10;
+const REFRESH_INTERVAL_MS = 60000;
 
 class CurrenciesList extends Component {
   constructor(props) {
@@ -19,7 +20,10 @@ class CurrenciesList extends Component {
 
   componentDidMount() {
     this.fetchData();
-    this.intervalId = setInterval(this.fetchData.bind(this), 6000);
+    this.intervalId = setInterval(
+      this.fetchData.bind(this),
+      REFRESH_INTERVAL_MS
+    );
   }
   componentWillUnmount() {
     clearInterval(this.intervalId);

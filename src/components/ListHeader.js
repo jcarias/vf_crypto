@@ -5,6 +5,7 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
+import { Currencies } from "../utils";
 
 const ListHeader = ({ selCurrency, handleCurrencyChange, ...otherProps }) => {
   return (
@@ -17,9 +18,14 @@ const ListHeader = ({ selCurrency, handleCurrencyChange, ...otherProps }) => {
         <FormControl>
           <InputLabel htmlFor="age-simple">Age</InputLabel>
           <Select value={selCurrency} onChange={handleCurrencyChange}>
-            <MenuItem value={"EUR"}>EUR</MenuItem>
-            <MenuItem value={"USD"}>USD</MenuItem>
-            <MenuItem value={"GBP"}>GBP</MenuItem>
+            {Object.keys(Currencies).map((currKey, index) => {
+              const currency = Currencies[currKey];
+              return (
+                <MenuItem key={index} value={currency.code}>
+                  {currency.code}
+                </MenuItem>
+              );
+            })}
           </Select>
         </FormControl>
       </Grid>

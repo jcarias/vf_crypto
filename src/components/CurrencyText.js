@@ -3,13 +3,12 @@ import { Currencies, currencyFormatter } from "../utils";
 import styled, { css } from "styled-components";
 
 const Text = styled.span`
-  color: #333
-    ${props =>
-      props.currency &&
-      css`
-        color: #aaa;
-        margin-right: 0.2rem;
-      `};
+  ${props =>
+    props.currency &&
+    css`
+      opacity: 0.5;
+      margin-right: 0.2rem;
+    `};
 `;
 
 const Container = styled.div`

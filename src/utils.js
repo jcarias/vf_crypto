@@ -49,7 +49,7 @@ export const Currencies = {
 export const currencyFormatter = (currency = "USD") => {
   const myCurr = Currencies[currency];
 
-  return new Intl.NumberFormat(undefined, {
+  return new Intl.NumberFormat("en-us", {
     style: "decimal",
     currency: myCurr.code,
     minimumFractionDigits: myCurr.decimal_digits
@@ -57,7 +57,7 @@ export const currencyFormatter = (currency = "USD") => {
 };
 
 export const percentFormatter = number =>
-  Number(number / 100).toLocaleString(undefined, {
+  Number(number / 100).toLocaleString("en-us", {
     style: "percent",
     minimumFractionDigits: 2
   });
