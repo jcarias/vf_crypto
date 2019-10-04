@@ -1,8 +1,21 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 import Axios from "axios";
-import isEmpty from "lodash/isEmpty";
+import styled from "styled-components";
 import ArrowBack from "@material-ui/icons/ArrowBackRounded";
+import CryptoCurrencyDetail from "./components/CrytoCurrencyDetail";
+
+const BackButton = styled.div`
+  margin-left: 0.5rem;
+  color: #66a7f2;
+  background-color: rgba(66, 167, 242, 0.2);
+  width: 24;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+`;
 
 class CurrencyDetails extends Component {
   constructor(props) {
@@ -20,7 +33,7 @@ class CurrencyDetails extends Component {
       })
       .catch(err => {
         console.error(err);
-        this.props.history.goBack();
+        this.props.history.push("/");
       });
   }
 
@@ -30,21 +43,14 @@ class CurrencyDetails extends Component {
     return (
       <div>
         <h1>Details</h1>
-        <div>
+        <BackButton>
           <Link to="/">
             <ArrowBack />
           </Link>
-        </div>
+        </BackButton>
         <hr />
-        {!isEmpty(this.state.currency) && (
-          <ul>
-            {Object.keys(this.state.currency).map((key, index) => (
-              <li key={index}>
-                <strong>{key}</strong>: {this.state.currency[key]}
-              </li>
-            ))}
-          </ul>
-        )}
+
+        <CryptoCurrencyDetail currency={this.state.currency} />
       </div>
     );
   }

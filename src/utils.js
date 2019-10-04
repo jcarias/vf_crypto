@@ -61,3 +61,7 @@ export const percentFormatter = number =>
     style: "percent",
     minimumFractionDigits: 2
   });
+
+export const numberFormatter = new Intl.NumberFormat("en-us", {
+  style: "decimal"
+});
