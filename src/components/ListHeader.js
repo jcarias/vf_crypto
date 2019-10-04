@@ -1,13 +1,14 @@
 import React from "react";
+import { connect } from "react-redux";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import { Currencies } from "../utils";
 
 const ListHeader = ({ selCurrency, handleCurrencyChange, ...otherProps }) => {
+  const { currenciesMap } = otherProps;
+  console.log(currenciesMap);
   return (
     <Grid container>
       <Grid item>
@@ -16,10 +17,13 @@ const ListHeader = ({ selCurrency, handleCurrencyChange, ...otherProps }) => {
       <Grid item xs></Grid>
       <Grid item>
         <FormControl>
-          <InputLabel htmlFor="age-simple">Age</InputLabel>
-          <Select value={selCurrency} onChange={handleCurrencyChange}>
-            {Object.keys(Currencies).map((currKey, index) => {
-              const currency = Currencies[currKey];
+          <Select
+            value={selCurrency}
+            onChange={handleCurrencyChange}
+            style={{ minWidth: 200 }}
+          >
+            {Object.keys(currenciesMap).map((currKey, index) => {
+              const currency = currenciesMap[currKey];
               return (
                 <MenuItem key={index} value={currency.code}>
                   {currency.code}
@@ -33,4 +37,10 @@ const ListHeader = ({ selCurrency, handleCurrencyChange, ...otherProps }) => {
   );
 };
 
-export default ListHeader;
+const mapStateToProps = (state, ownProps) => {
+  return {
+    currenciesMap: state.CurrenciesReducer
+  };
+};
+
+export default connect(mapStateToProps)(ListHeader);

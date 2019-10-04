@@ -1,56 +1,43 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import Grid from "@material-ui/core/Grid";
 import ListHeader from "./components/ListHeader";
 import CurrenciesTable from "./components/CurrenciesTable";
-import Axios from "axios";
-
-const CURRENCIES_LIMIT = 10;
-const REFRESH_INTERVAL_MS = 60000;
+import { getLastUpdateTime } from "./store/CryptoReducer";
+import { Typography } from "@material-ui/core";
 
 class CurrenciesList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false,
-      data: [],
-      timeStamp: null,
       currentCurrency: "USD"
     };
   }
 
   componentDidMount() {
-    this.fetchData();
-    this.intervalId = setInterval(
-      this.fetchData.bind(this),
-      REFRESH_INTERVAL_MS
-    );
-  }
-  componentWillUnmount() {
-    clearInterval(this.intervalId);
+    this.props.start(this.state.currentCurrency);
   }
 
-  fetchData = () => {
-    this.setState({ loading: true });
-    Axios.get(
-      `https://api.coinmarketcap.com/v1/ticker/?limit=${CURRENCIES_LIMIT}&convert=${this.state.currentCurrency}`
-    ).then(response => {
-      console.log(response);
-      this.setState({
-        loading: false,
-        data: response.data,
-        timeStamp: new Date().getTime()
-      });
-    });
-  };
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.currentCurrency !== this.state.currentCurrency) {
+      this.props.stop();
+      this.props.start(this.state.currentCurrency);
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.stop();
+  }
+
   handleCurrencyChange = newCurrency => {
     if (newCurrency !== this.state.currentCurrency) {
-      this.setState({ currentCurrency: newCurrency.target.value }, () =>
-        this.fetchData()
-      );
+      this.setState({ currentCurrency: newCurrency.target.value });
     }
   };
 
   render() {
+    const { lastUpdate, cryptoCurrenciesData } = this.props;
+
     return (
       <Grid container>
         <Grid item xs={12}>
@@ -62,13 +49,37 @@ class CurrenciesList extends Component {
 
         <Grid item xs={12}>
           <CurrenciesTable
-            currenciesList={this.state.data}
+            currenciesList={cryptoCurrenciesData}
             currency={this.state.currentCurrency}
           />
+        </Grid>
+        <Grid item>
+          <Typography variant="caption" color="textSecondary">
+            Last update:{lastUpdate}
+          </Typography>
         </Grid>
       </Grid>
     );
   }
 }
 
-export default CurrenciesList;
+const mapStateToProps = (state, ownProps) => {
+  console.log(state);
+  return {
+    cryptoCurrenciesData: state.CryptoReducer.data,
+    lastUpdate: getLastUpdateTime(state.CryptoReducer)
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    start: currency =>
+      dispatch({ type: "START_WATCHER_TASK", payload: currency }),
+    stop: () => dispatch({ type: "STOP_WATCHER_TASK" })
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CurrenciesList);

@@ -21,10 +21,7 @@ const Container = styled.div`
     `};
 `;
 
-const StyledIncreaseIcon = styled(ArrowUp)`
-  max-height: 12px;
-`;
-const StyledDecreaseIcon = styled.div`
+const StyledVarianceIcon = styled.div`
   & > svg {
     max-height: 12px;
   }
@@ -34,10 +31,10 @@ const VarianceText = ({ value = 0, ...otherProps }) => {
   return (
     <Container negative={value < 0} {...otherProps}>
       <Text>{percentFormatter(value)}</Text>
-      <StyledDecreaseIcon>
+      <StyledVarianceIcon>
         {value > 0 && <ArrowUp />}
         {value < 0 && <ArrowDown />}
-      </StyledDecreaseIcon>
+      </StyledVarianceIcon>
     </Container>
   );
 };
