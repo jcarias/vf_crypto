@@ -5,10 +5,11 @@ import Typography from "@material-ui/core/Typography";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
+import { getCurrenciesList } from "../store/CurrenciesReducer";
 
 const ListHeader = ({ selCurrency, handleCurrencyChange, ...otherProps }) => {
-  const { currenciesMap } = otherProps;
-  console.log(currenciesMap);
+  const { currenciesList } = otherProps;
+  console.log(currenciesList);
   return (
     <Grid container>
       <Grid item>
@@ -22,14 +23,11 @@ const ListHeader = ({ selCurrency, handleCurrencyChange, ...otherProps }) => {
             onChange={handleCurrencyChange}
             style={{ minWidth: 200 }}
           >
-            {Object.keys(currenciesMap).map((currKey, index) => {
-              const currency = currenciesMap[currKey];
-              return (
-                <MenuItem key={index} value={currency.code}>
-                  {currency.code}
-                </MenuItem>
-              );
-            })}
+            {currenciesList.map((currency, index) => (
+              <MenuItem key={index} value={currency.code}>
+                {currency.code}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
       </Grid>
@@ -39,7 +37,8 @@ const ListHeader = ({ selCurrency, handleCurrencyChange, ...otherProps }) => {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    currenciesMap: state.CurrenciesReducer
+    currenciesMap: state.CurrenciesReducer,
+    currenciesList: getCurrenciesList(state.CurrenciesReducer)
   };
 };
 

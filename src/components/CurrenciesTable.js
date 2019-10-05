@@ -13,8 +13,11 @@ import CurrencyText from "./CurrencyText";
 import VarianceText from "./VarianceText";
 import { Grid } from "@material-ui/core";
 
-const CurrenciesTable = ({ currenciesList, currency, ...otherProps }) => {
-  console.log(currenciesList);
+const CurrenciesTable = ({
+  cryptoCurrenciesList,
+  selCurrency,
+  ...otherProps
+}) => {
   return (
     <Table>
       <TableHead>
@@ -26,8 +29,8 @@ const CurrenciesTable = ({ currenciesList, currency, ...otherProps }) => {
         </TableRow>
       </TableHead>
       <TableBody>
-        {!isEmpty(currenciesList) &&
-          currenciesList.map(cryptoCurr => (
+        {!isEmpty(cryptoCurrenciesList) &&
+          cryptoCurrenciesList.map(cryptoCurr => (
             <TableRow
               hover
               key={cryptoCurr.id}
@@ -53,15 +56,15 @@ const CurrenciesTable = ({ currenciesList, currency, ...otherProps }) => {
               </TableCell>
               <TableCell>
                 <CurrencyText
-                  currency={currency}
-                  value={cryptoCurr[`price_${currency.toLowerCase()}`]}
+                  currency={selCurrency}
+                  value={cryptoCurr[`price_${selCurrency.toLowerCase()}`]}
                   style={{ fontSize: "1.1em" }}
                 ></CurrencyText>
               </TableCell>
               <TableCell>
                 <CurrencyText
-                  currency={currency}
-                  value={cryptoCurr[`market_cap_${currency.toLowerCase()}`]}
+                  currency={selCurrency}
+                  value={cryptoCurr[`market_cap_${selCurrency.toLowerCase()}`]}
                 ></CurrencyText>
               </TableCell>
               <TableCell>

@@ -6,7 +6,7 @@ import CurrencyText from "./CurrencyText";
 import { numberFormatter } from "../utils";
 
 const Container = styled.div`
-  min-height: calc(100vh - 88px);
+  min-height: calc(100vh - 200px);
   background-color: #1a2f4e;
   color: white;
   font-family: "Montserrat", sans-serif;
@@ -63,23 +63,23 @@ const RankIndicator = styled.div`
   color: #66a7f2;
   background-color: rgba(66, 167, 242, 0.2);
   font-weight: 600;
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
 `;
 
-const CryptoCurrencyDetail = ({ currency, ...otherProps }) => {
+const CryptoCurrencyDetail = ({ cryptoCurrency, ...otherProps }) => {
   return (
     <Container>
-      {currency && (
+      {cryptoCurrency && (
         <Grid container direction="row">
           <Grid item xs={4}>
             <DetailInfoContainer>
               <LabelText>Rank</LabelText>
-              <RankIndicator>{currency.rank}</RankIndicator>
+              <RankIndicator>{cryptoCurrency.rank}</RankIndicator>
             </DetailInfoContainer>
           </Grid>
           <Grid item xs={8}>
@@ -88,7 +88,7 @@ const CryptoCurrencyDetail = ({ currency, ...otherProps }) => {
                 <DetailInfoContainerRows>
                   <LabelText>Market Cap</LabelText>
                   <StyleCurrencyText
-                    value={currency.market_cap_usd}
+                    value={cryptoCurrency.market_cap_usd}
                     currency="USD"
                   ></StyleCurrencyText>
                 </DetailInfoContainerRows>
@@ -97,7 +97,7 @@ const CryptoCurrencyDetail = ({ currency, ...otherProps }) => {
                 <DetailInfoContainerRows>
                   <LabelText>24h Volume</LabelText>
                   <StyleCurrencyText
-                    value={currency["24h_volume_usd"]}
+                    value={cryptoCurrency["24h_volume_usd"]}
                     currency="USD"
                   ></StyleCurrencyText>
                 </DetailInfoContainerRows>
@@ -106,8 +106,8 @@ const CryptoCurrencyDetail = ({ currency, ...otherProps }) => {
                 <DetailInfoContainerRows>
                   <LabelText>Circulating Supply</LabelText>
                   <ValueText>
-                    {numberFormatter.format(currency.available_supply)}
-                    <LabelCurrency>{currency.symbol}</LabelCurrency>
+                    {numberFormatter.format(cryptoCurrency.available_supply)}
+                    <LabelCurrency>{cryptoCurrency.symbol}</LabelCurrency>
                   </ValueText>
                 </DetailInfoContainerRows>
               </Grid>
@@ -115,8 +115,8 @@ const CryptoCurrencyDetail = ({ currency, ...otherProps }) => {
                 <DetailInfoContainerRows>
                   <LabelText>Total Supply</LabelText>
                   <ValueText>
-                    {numberFormatter.format(currency.max_supply)}
-                    <LabelCurrency>{currency.symbol}</LabelCurrency>
+                    {numberFormatter.format(cryptoCurrency.max_supply)}
+                    <LabelCurrency>{cryptoCurrency.symbol}</LabelCurrency>
                   </ValueText>
                 </DetailInfoContainerRows>
               </Grid>

@@ -49,7 +49,8 @@ class CurrenciesList extends Component {
 
         <Grid item xs={12}>
           <CurrenciesTable
-            currenciesList={cryptoCurrenciesData}
+            cryptoCurrenciesList={cryptoCurrenciesData}
+            selCurrency={this.state.currentCurrency}
             currency={this.state.currentCurrency}
           />
         </Grid>

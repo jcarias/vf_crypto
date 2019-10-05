@@ -5,7 +5,7 @@ import { updateCryptoCurrencyData } from "./actionCreators";
 
 /** Local constants*/
 const CURRENCIES_LIMIT = 10;
-const POLL_INTERVAL = 10000;
+const POLL_INTERVAL = 60000;
 
 /** function that returns an axios call */
 const fetchCryptoCurrencyData = selectedCurrency =>
