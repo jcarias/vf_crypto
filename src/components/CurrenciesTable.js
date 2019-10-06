@@ -40,7 +40,7 @@ const HeaderCell = styled.th`
   border-bottom: 1px solid #d5e1ea;
   font-size: 0.9em;
   text-align: left;
-  padding: 8px 16px;
+  padding: 6px 16px;
 `;
 
 const ClickableHeaderContainer = styled.div`

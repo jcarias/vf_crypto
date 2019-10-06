@@ -5,9 +5,9 @@ import {
   STOP_WATCHER_TASK,
   UPDATE_CRYPTO_CURR_DATA,
   CHANGE_SORT,
-  SELECT_CURRENCY
+  SELECT_CURRENCY,
+  REQUEST_CRYPTO_CURR_DATA
 } from "./actionConstants";
-import { selectCurrency } from "./actionCreators";
 
 /* Reducer */
 export default (
@@ -21,18 +21,21 @@ export default (
       sortKey: "rank",
       sortAsc: true
     },
-    selectedId: null
+    selectedId: null,
+    isLoading: false
   },
   action
 ) => {
   switch (action.type) {
+    case REQUEST_CRYPTO_CURR_DATA:
+      return { ...state, isLoading: true };
     case START_WATCHER_TASK:
-      return { ...state, status: "Running" };
+      return { ...state, status: "Running", isLoading: false };
     case STOP_WATCHER_TASK:
-      return { ...state, status: "Stopped" };
+      return { ...state, status: "Stopped", isLoading: false };
     case UPDATE_CRYPTO_CURR_DATA:
       const timeStamp = new Date().getTime();
-      return { ...state, data: action.data, timeStamp };
+      return { ...state, data: action.data, timeStamp, isLoading: false };
     case CHANGE_SORT:
       let newSortInfo = {
         sortKey: action.sortKey,
@@ -43,7 +46,6 @@ export default (
       };
       return { ...state, sortInfo: newSortInfo };
     case SELECT_CURRENCY:
-      console.log(action);
       return { ...state, selectedId: action.id };
     default:
       return state;
@@ -90,7 +92,6 @@ export const chosenCurrencySelector = createSelector(
     const filtered = data.filter(
       currency => currency.id === selectedCurrencyId
     );
-    console.log(filtered, selectCurrency);
     if (!isEmpty(filtered)) return filtered[0];
     else return {};
   }

@@ -89,7 +89,6 @@ class CryptoCurrencyDetails extends Component {
       `https://api.coinmarketcap.com/v1/ticker/${this.props.match.params.id}/`
     )
       .then(response => {
-        console.log(response);
         this.setState({ cryptoCurrency: response.data[0] });
       })
       .catch(err => {

@@ -1,7 +1,10 @@
 import axios from "axios";
 import { take, race, call, put, delay } from "redux-saga/effects";
 
-import { updateCryptoCurrencyData } from "./actionCreators";
+import {
+  updateCryptoCurrencyData,
+  requestCryptoCurrencyData
+} from "./actionCreators";
 import { dummyData } from "./DummyData";
 
 /** Local constants*/
@@ -17,10 +20,10 @@ const fetchCryptoCurrencyData = selectedCurrency =>
 
 /** saga worker that is responsible for the side effects */
 function* fetchDataEffectSaga(payload) {
-  console.log(payload);
   while (true) {
     try {
       // data is obtained after axios call is resolved
+      yield put(requestCryptoCurrencyData());
       let { data } = yield call(fetchCryptoCurrencyData, payload);
       yield put(updateCryptoCurrencyData(data));
       yield delay(POLL_INTERVAL);

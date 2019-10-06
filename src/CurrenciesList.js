@@ -6,6 +6,7 @@ import CurrenciesTable from "./components/CurrenciesTable";
 import { getLastUpdateTime, sortedDataSelector } from "./store/CryptoReducer";
 import { Typography } from "@material-ui/core";
 import { changeSort, selectCurrency } from "./store/actionCreators";
+import Loader from "./components/Loader";
 
 class CurrenciesList extends Component {
   constructor(props) {
@@ -42,44 +43,46 @@ class CurrenciesList extends Component {
       cryptoCurrenciesData,
       changeSort,
       sortInfo,
-      selectCurrency
+      selectCurrency,
+      isLoading
     } = this.props;
 
     return (
-      <Grid container>
-        <Grid item xs={12}>
-          <ListHeader
-            selCurrency={this.state.currentCurrency}
-            handleCurrencyChange={this.handleCurrencyChange}
-          />
-        </Grid>
+      <React.Fragment>
+        {isLoading && <Loader />}
+        <Grid container>
+          <Grid item xs={12}>
+            <ListHeader
+              selCurrency={this.state.currentCurrency}
+              handleCurrencyChange={this.handleCurrencyChange}
+            />
+          </Grid>
 
-        <Grid item xs={12}>
-          <CurrenciesTable
-            cryptoCurrenciesList={cryptoCurrenciesData}
-            selCurrency={this.state.currentCurrency}
-            currency={this.state.currentCurrency}
-            handleSortClick={changeSort}
-            sortInfo={sortInfo}
-            handelRowSelect={selectCurrency}
-          />
+          <Grid item xs={12}>
+            <CurrenciesTable
+              cryptoCurrenciesList={cryptoCurrenciesData}
+              selCurrency={this.state.currentCurrency}
+              currency={this.state.currentCurrency}
+              handleSortClick={changeSort}
+              sortInfo={sortInfo}
+              handelRowSelect={selectCurrency}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="caption" color="textSecondary" align="right">
+              Last update: <strong>{new Date(lastUpdate).toISOString()}</strong>
+            </Typography>
+          </Grid>
         </Grid>
-        <Grid item>
-          <Typography variant="caption" color="textSecondary">
-            Last update:{new Date(lastUpdate).toISOString()}
-          </Typography>
-          <span>{this.props.sortInfo.sortKey}</span>
-          <span>{this.props.sortInfo.sortAsc.toString()}</span>
-        </Grid>
-      </Grid>
+      </React.Fragment>
     );
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
-  console.log(state);
   return {
     sortInfo: state.CryptoReducer.sortInfo,
+    isLoading: state.CryptoReducer.isLoading,
     cryptoCurrenciesData: sortedDataSelector(state.CryptoReducer),
     lastUpdate: getLastUpdateTime(state.CryptoReducer)
   };
