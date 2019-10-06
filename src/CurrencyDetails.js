@@ -2,14 +2,17 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import Axios from "axios";
 import isEmpty from "lodash/isEmpty";
+import isEqual from "lodash/isEqual";
 import styled from "styled-components";
 import ArrowBack from "@material-ui/icons/ArrowBackRounded";
 import CryptoCurrencyDetail from "./components/CryptoCurrencyDetail";
 import Label from "./components/Label";
 import CurrencyText from "./components/CurrencyText";
 import Loader from "./components/Loader";
+import { connect } from "react-redux";
 
 import CryptoCurrencyIcon from "./assets/images";
+import { chosenCurrencySelector } from "./store/CryptoReducer";
 
 const HeaderContainer = styled.div`
   height: 88px;
@@ -42,8 +45,24 @@ const BackButton = styled.div`
 `;
 
 const HeaderPrice = styled.div`
-  font-size: 1.2 rem;
+  font-size: 1.3em;
 `;
+
+const CurrencyContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+`;
+
+const iconSize = 36;
+const CurrencyIconContainer = styled.div`
+  font-size: ${iconSize}px;
+  width: ${iconSize}px;
+  height: ${iconSize}px;
+  margin-right: 0.5rem;
+`;
+
+const InfoContainer = styled.div``;
 
 class CryptoCurrencyDetails extends Component {
   constructor(props) {
@@ -52,6 +71,20 @@ class CryptoCurrencyDetails extends Component {
   }
 
   componentDidMount() {
+    if (isEmpty(this.props.selectedCurrency)) {
+      this.fetchNotFoundCurrency();
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (!isEqual(prevProps.selectedCurrency, this.props.selectedCurrency)) {
+      if (isEmpty(this.props.selectedCurrency)) {
+        this.fetchNotFoundCurrency();
+      }
+    }
+  }
+
+  fetchNotFoundCurrency = () => {
     Axios.get(
       `https://api.coinmarketcap.com/v1/ticker/${this.props.match.params.id}/`
     )
@@ -63,15 +96,20 @@ class CryptoCurrencyDetails extends Component {
         console.error(err);
         this.props.history.push("/");
       });
-  }
+  };
 
   handleBackButtonClick = () => {
     this.props.history.push("/");
   };
 
   render() {
-    const { cryptoCurrency } = this.state;
-    if (isEmpty(cryptoCurrency)) {
+    let currencyInfo = this.props.selectedCurrency;
+
+    if (isEmpty(currencyInfo)) {
+      currencyInfo = this.state.cryptoCurrency;
+    }
+
+    if (isEmpty(currencyInfo)) {
       return <Loader />;
     }
 
@@ -81,22 +119,35 @@ class CryptoCurrencyDetails extends Component {
           <BackButton onClick={this.handleBackButtonClick}>
             <ArrowBack />
           </BackButton>
-          <div>
-            <CryptoCurrencyIcon symbol={cryptoCurrency.symbol} />
-            <span>{cryptoCurrency.name}</span>
-            <Label>{cryptoCurrency.symbol}</Label>
-          </div>
+          <CurrencyContainer>
+            <CurrencyIconContainer>
+              <CryptoCurrencyIcon symbol={currencyInfo.symbol} />
+            </CurrencyIconContainer>
+            <InfoContainer>
+              <div>
+                <span>{currencyInfo.name}</span>
+              </div>
+              <div>
+                <Label>{currencyInfo.symbol}</Label>
+              </div>
+            </InfoContainer>
+          </CurrencyContainer>
           <div>
             <HeaderPrice>
-              <CurrencyText currency="USD" value={cryptoCurrency.price_usd} />
+              <CurrencyText currency="USD" value={currencyInfo.price_usd} />
             </HeaderPrice>
           </div>
         </HeaderContainer>
 
-        <CryptoCurrencyDetail cryptoCurrency={cryptoCurrency} />
+        <CryptoCurrencyDetail cryptoCurrency={currencyInfo} />
       </div>
     );
   }
 }
 
-export default withRouter(CryptoCurrencyDetails);
+const mapStateToProps = (state, ownProps) => {
+  return {
+    selectedCurrency: chosenCurrencySelector(state.CryptoReducer)
+  };
+};
+export default connect(mapStateToProps)(withRouter(CryptoCurrencyDetails));

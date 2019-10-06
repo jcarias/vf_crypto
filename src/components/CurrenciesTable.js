@@ -63,6 +63,7 @@ const CurrenciesTable = ({
   selCurrency,
   handleSortClick,
   sortInfo,
+  handelRowSelect,
   ...otherProps
 }) => {
   return (
@@ -101,9 +102,10 @@ const CurrenciesTable = ({
             <TableRow
               hover
               key={cryptoCurr.id}
-              onClick={() =>
-                otherProps.history.push(`/details/${cryptoCurr.id}`)
-              }
+              onClick={() => {
+                handelRowSelect(cryptoCurr.id);
+                return otherProps.history.push(`/details/${cryptoCurr.id}`);
+              }}
             >
               <TableCell>
                 <CurrencyContainer>

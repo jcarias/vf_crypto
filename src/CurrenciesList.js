@@ -5,7 +5,7 @@ import ListHeader from "./components/ListHeader";
 import CurrenciesTable from "./components/CurrenciesTable";
 import { getLastUpdateTime, sortedDataSelector } from "./store/CryptoReducer";
 import { Typography } from "@material-ui/core";
-import { changeSort } from "./store/actionCreators";
+import { changeSort, selectCurrency } from "./store/actionCreators";
 
 class CurrenciesList extends Component {
   constructor(props) {
@@ -41,7 +41,8 @@ class CurrenciesList extends Component {
       lastUpdate,
       cryptoCurrenciesData,
       changeSort,
-      sortInfo
+      sortInfo,
+      selectCurrency
     } = this.props;
 
     return (
@@ -60,6 +61,7 @@ class CurrenciesList extends Component {
             currency={this.state.currentCurrency}
             handleSortClick={changeSort}
             sortInfo={sortInfo}
+            handelRowSelect={selectCurrency}
           />
         </Grid>
         <Grid item>
@@ -90,6 +92,9 @@ const mapDispatchToProps = dispatch => {
     stop: () => dispatch({ type: "STOP_WATCHER_TASK" }),
     changeSort: key => {
       dispatch(changeSort(key));
+    },
+    selectCurrency: id => {
+      dispatch(selectCurrency(id));
     }
   };
 };

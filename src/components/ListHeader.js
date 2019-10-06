@@ -10,7 +10,7 @@ import styled from "styled-components";
 
 const BrandTitle = styled.span`
   font-size: 2em;
-  color: rgba(0, 0, 0, 0.7);
+  color: rgba(0, 0, 0, 0.5);
 `;
 
 const ListHeader = ({ selCurrency, handleCurrencyChange, ...otherProps }) => {

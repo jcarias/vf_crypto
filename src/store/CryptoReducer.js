@@ -1,10 +1,13 @@
+import { createSelector } from "reselect";
+import isEmpty from "lodash/isEmpty";
 import {
   START_WATCHER_TASK,
   STOP_WATCHER_TASK,
   UPDATE_CRYPTO_CURR_DATA,
-  CHANGE_SORT
+  CHANGE_SORT,
+  SELECT_CURRENCY
 } from "./actionConstants";
-import { createSelector } from "reselect";
+import { selectCurrency } from "./actionCreators";
 
 /* Reducer */
 export default (
@@ -17,7 +20,8 @@ export default (
     sortInfo: {
       sortKey: "rank",
       sortAsc: true
-    }
+    },
+    selectedId: null
   },
   action
 ) => {
@@ -38,6 +42,9 @@ export default (
             : true
       };
       return { ...state, sortInfo: newSortInfo };
+    case SELECT_CURRENCY:
+      console.log(action);
+      return { ...state, selectedId: action.id };
     default:
       return state;
   }
@@ -65,7 +72,6 @@ const dataSelector = state => {
 export const sortedDataSelector = createSelector(
   [dataSelector, sortInfoSelector],
   (data, sortInfo) => {
-    console.log(sortInfo);
     return data.sort(function(a, b) {
       if (a[sortInfo.sortKey] < b[sortInfo.sortKey])
         return sortInfo.sortAsc ? -1 : 1;
@@ -73,5 +79,19 @@ export const sortedDataSelector = createSelector(
         return sortInfo.sortAsc ? 1 : -1;
       return 0;
     });
+  }
+);
+
+const getSelectedCurrencyId = state => state.selectedId;
+
+export const chosenCurrencySelector = createSelector(
+  [dataSelector, getSelectedCurrencyId],
+  (data, selectedCurrencyId) => {
+    const filtered = data.filter(
+      currency => currency.id === selectedCurrencyId
+    );
+    console.log(filtered, selectCurrency);
+    if (!isEmpty(filtered)) return filtered[0];
+    else return {};
   }
 );
