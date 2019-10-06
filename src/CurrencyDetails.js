@@ -7,7 +7,8 @@ import ArrowBack from "@material-ui/icons/ArrowBackRounded";
 import CryptoCurrencyDetail from "./components/CryptoCurrencyDetail";
 import Label from "./components/Label";
 import CurrencyText from "./components/CurrencyText";
-import Image from "./Image";
+
+import CryptoCurrencyIcon from "./assets/images";
 
 const HeaderContainer = styled.div`
   height: 88px;
@@ -80,12 +81,7 @@ class CryptoCurrencyDetails extends Component {
             <ArrowBack />
           </BackButton>
           <div>
-            <Image
-              src={`https://cryptoicons.org/api/icon/${cryptoCurrency.symbol.toLowerCase()}/32`}
-              fallBackSrc={`https://cryptoicons.org/api/icon/generic/32`}
-              alt={cryptoCurrency.symbol}
-              size={32}
-            />
+            <CryptoCurrencyIcon symbol={cryptoCurrency.symbol} />
             <span>{cryptoCurrency.name}</span>
             <Label>{cryptoCurrency.symbol}</Label>
           </div>

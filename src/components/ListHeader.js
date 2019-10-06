@@ -1,19 +1,24 @@
 import React from "react";
 import { connect } from "react-redux";
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import { getCurrenciesList } from "../store/CurrenciesReducer";
 
+import styled from "styled-components";
+
+const BrandTitle = styled.span`
+  font-size: 2em;
+  color: rgba(0, 0, 0, 0.7);
+`;
+
 const ListHeader = ({ selCurrency, handleCurrencyChange, ...otherProps }) => {
   const { currenciesList } = otherProps;
-  console.log(currenciesList);
   return (
     <Grid container>
-      <Grid item>
-        <Typography>VF Crypto</Typography>
+      <Grid item xs>
+        <BrandTitle>VF Crypto</BrandTitle>
       </Grid>
       <Grid item xs></Grid>
       <Grid item>

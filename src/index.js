@@ -1,13 +1,20 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
+import styled from "styled-components";
 import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
 import store from "./store/store";
 
+const StyledRoot = styled.div`
+  font-family: "Montserrat", sans-serif;
+`;
+
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <StyledRoot>
+      <App />
+    </StyledRoot>
   </Provider>,
   document.getElementById("root")
 );

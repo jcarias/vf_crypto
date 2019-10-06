@@ -1,8 +1,10 @@
 import {
   START_WATCHER_TASK,
   STOP_WATCHER_TASK,
-  UPDATE_CRYPTO_CURR_DATA
+  UPDATE_CRYPTO_CURR_DATA,
+  CHANGE_SORT
 } from "./actionConstants";
+import { createSelector } from "reselect";
 
 /* Reducer */
 export default (
@@ -11,7 +13,11 @@ export default (
     seconds: 0,
     timeStamp: new Date().getTime(),
     error: null,
-    data: []
+    data: [],
+    sortInfo: {
+      sortKey: "rank",
+      sortAsc: true
+    }
   },
   action
 ) => {
@@ -23,8 +29,15 @@ export default (
     case UPDATE_CRYPTO_CURR_DATA:
       const timeStamp = new Date().getTime();
       return { ...state, data: action.data, timeStamp };
-    case "RESET":
-      return { ...state, seconds: 0 };
+    case CHANGE_SORT:
+      let newSortInfo = {
+        sortKey: action.sortKey,
+        sortAsc:
+          action.sortKey === state.sortInfo.sortKey
+            ? !state.sortInfo.sortAsc
+            : true
+      };
+      return { ...state, sortInfo: newSortInfo };
     default:
       return state;
   }
@@ -36,3 +49,20 @@ export default (
 export const getStatus = state => state.status;
 
 export const getLastUpdateTime = state => state.timeStamp;
+
+const sortInfoSelector = state => state.sortInfo;
+const dataSelector = state => state.data;
+
+export const sortedDataSelector = createSelector(
+  [dataSelector, sortInfoSelector],
+  (data, sortInfo) => {
+    console.log(sortInfo);
+    return data.sort(function(a, b) {
+      if (a[sortInfo.sortKey] < b[sortInfo.sortKey])
+        return sortInfo.sortAsc ? -1 : 1;
+      if (a[sortInfo.sortKey] > b[sortInfo.sortKey])
+        return sortInfo.sortAsc ? 1 : -1;
+      return 0;
+    });
+  }
+);

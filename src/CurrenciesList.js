@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import Grid from "@material-ui/core/Grid";
 import ListHeader from "./components/ListHeader";
 import CurrenciesTable from "./components/CurrenciesTable";
-import { getLastUpdateTime } from "./store/CryptoReducer";
+import { getLastUpdateTime, sortedDataSelector } from "./store/CryptoReducer";
 import { Typography } from "@material-ui/core";
 
 class CurrenciesList extends Component {
@@ -56,7 +56,7 @@ class CurrenciesList extends Component {
         </Grid>
         <Grid item>
           <Typography variant="caption" color="textSecondary">
-            Last update:{lastUpdate}
+            Last update:{new Date(lastUpdate).toISOString()}
           </Typography>
         </Grid>
       </Grid>
@@ -67,7 +67,7 @@ class CurrenciesList extends Component {
 const mapStateToProps = (state, ownProps) => {
   console.log(state);
   return {
-    cryptoCurrenciesData: state.CryptoReducer.data,
+    cryptoCurrenciesData: sortedDataSelector(state.CryptoReducer),
     lastUpdate: getLastUpdateTime(state.CryptoReducer)
   };
 };
