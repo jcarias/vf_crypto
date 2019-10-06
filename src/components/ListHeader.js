@@ -4,12 +4,12 @@ import Grid from "@material-ui/core/Grid";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import { getCurrenciesList } from "../store/CurrenciesReducer";
+import { getFiatCurrenciesList } from "../store/CurrenciesReducer";
 
 import styled from "styled-components";
 
 const BrandTitle = styled.span`
-  font-size: 2em;
+  font-size: 1.5em;
   color: rgba(0, 0, 0, 0.5);
 `;
 
@@ -43,7 +43,7 @@ const ListHeader = ({ selCurrency, handleCurrencyChange, ...otherProps }) => {
 const mapStateToProps = (state, ownProps) => {
   return {
     currenciesMap: state.CurrenciesReducer,
-    currenciesList: getCurrenciesList(state.CurrenciesReducer)
+    currenciesList: getFiatCurrenciesList(state.CurrenciesReducer)
   };
 };
 

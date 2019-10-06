@@ -62,8 +62,9 @@ export default (state = initialState, action) => {
 /**
  * Selectors
  */
-export const getCurrencyByCode = (state, currencyCode) => state[currencyCode];
+export const getFiatCurrencyByCode = (state, fiatCurrencyCode) =>
+  state[fiatCurrencyCode];
 
-export const getCurrenciesList = state => {
+export const getFiatCurrenciesList = state => {
   return Object.keys(state.currencies).map(key => state.currencies[key]);
 };
