@@ -7,6 +7,7 @@ import ArrowBack from "@material-ui/icons/ArrowBackRounded";
 import CryptoCurrencyDetail from "./components/CryptoCurrencyDetail";
 import Label from "./components/Label";
 import CurrencyText from "./components/CurrencyText";
+import Loader from "./components/Loader";
 
 import CryptoCurrencyIcon from "./assets/images";
 
@@ -71,7 +72,7 @@ class CryptoCurrencyDetails extends Component {
   render() {
     const { cryptoCurrency } = this.state;
     if (isEmpty(cryptoCurrency)) {
-      return <span>Loading...</span>;
+      return <Loader />;
     }
 
     return (

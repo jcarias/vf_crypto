@@ -5,6 +5,7 @@ import ListHeader from "./components/ListHeader";
 import CurrenciesTable from "./components/CurrenciesTable";
 import { getLastUpdateTime, sortedDataSelector } from "./store/CryptoReducer";
 import { Typography } from "@material-ui/core";
+import { changeSort } from "./store/actionCreators";
 
 class CurrenciesList extends Component {
   constructor(props) {
@@ -36,7 +37,12 @@ class CurrenciesList extends Component {
   };
 
   render() {
-    const { lastUpdate, cryptoCurrenciesData } = this.props;
+    const {
+      lastUpdate,
+      cryptoCurrenciesData,
+      changeSort,
+      sortInfo
+    } = this.props;
 
     return (
       <Grid container>
@@ -52,12 +58,16 @@ class CurrenciesList extends Component {
             cryptoCurrenciesList={cryptoCurrenciesData}
             selCurrency={this.state.currentCurrency}
             currency={this.state.currentCurrency}
+            handleSortClick={changeSort}
+            sortInfo={sortInfo}
           />
         </Grid>
         <Grid item>
           <Typography variant="caption" color="textSecondary">
             Last update:{new Date(lastUpdate).toISOString()}
           </Typography>
+          <span>{this.props.sortInfo.sortKey}</span>
+          <span>{this.props.sortInfo.sortAsc.toString()}</span>
         </Grid>
       </Grid>
     );
@@ -67,6 +77,7 @@ class CurrenciesList extends Component {
 const mapStateToProps = (state, ownProps) => {
   console.log(state);
   return {
+    sortInfo: state.CryptoReducer.sortInfo,
     cryptoCurrenciesData: sortedDataSelector(state.CryptoReducer),
     lastUpdate: getLastUpdateTime(state.CryptoReducer)
   };
@@ -76,7 +87,10 @@ const mapDispatchToProps = dispatch => {
   return {
     start: currency =>
       dispatch({ type: "START_WATCHER_TASK", payload: currency }),
-    stop: () => dispatch({ type: "STOP_WATCHER_TASK" })
+    stop: () => dispatch({ type: "STOP_WATCHER_TASK" }),
+    changeSort: key => {
+      dispatch(changeSort(key));
+    }
   };
 };
 

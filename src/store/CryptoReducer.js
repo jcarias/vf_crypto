@@ -51,7 +51,16 @@ export const getStatus = state => state.status;
 export const getLastUpdateTime = state => state.timeStamp;
 
 const sortInfoSelector = state => state.sortInfo;
-const dataSelector = state => state.data;
+
+const dataSelector = state => {
+  return state.data.map(currency => ({
+    ...currency,
+    rank: Number(currency.rank),
+    price_usd: Number(currency.price_usd),
+    market_cap_usd: Number(currency.market_cap_usd),
+    percent_change_24h: Number(currency.percent_change_24h)
+  }));
+};
 
 export const sortedDataSelector = createSelector(
   [dataSelector, sortInfoSelector],

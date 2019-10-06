@@ -2,6 +2,7 @@ import axios from "axios";
 import { take, race, call, put, delay } from "redux-saga/effects";
 
 import { updateCryptoCurrencyData } from "./actionCreators";
+import { dummyData } from "./DummyData";
 
 /** Local constants*/
 const CURRENCIES_LIMIT = 10;
@@ -24,6 +25,7 @@ function* fetchDataEffectSaga(payload) {
       yield put(updateCryptoCurrencyData(data));
       yield delay(POLL_INTERVAL);
     } catch (err) {
+      yield put(updateCryptoCurrencyData(dummyData));
       yield put({
         type: "ON_FETCH_ERROR",
         message: err.message

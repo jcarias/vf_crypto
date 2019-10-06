@@ -7,12 +7,12 @@ import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import CurrencyText from "./CurrencyText";
 import VarianceText from "./VarianceText";
-import CryptoCurrencyIcon from "../assets/images";
+import SortUp from "@material-ui/icons/ArrowDropUp";
+import SortDown from "@material-ui/icons/ArrowDropDown";
 
+import CryptoCurrencyIcon from "../assets/images";
 import styled from "styled-components";
 import Label from "./Label";
-import { connect } from "react-redux";
-import { changeSort } from "../store/actionCreators";
 
 const Table = styled.table`
   width: 100%;
@@ -43,28 +43,56 @@ const HeaderCell = styled.th`
   padding: 8px 16px;
 `;
 
+const ClickableHeaderContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const ClickableHeader = ({ label, columnKey, handleSortClick, sortInfo }) => (
+  <HeaderCell onClick={() => handleSortClick(columnKey)}>
+    <ClickableHeaderContainer>
+      <Label>{label}</Label>
+      {sortInfo.sortKey === columnKey &&
+        (sortInfo.sortAsc ? <SortUp /> : <SortDown />)}
+    </ClickableHeaderContainer>
+  </HeaderCell>
+);
+
 const CurrenciesTable = ({
   cryptoCurrenciesList,
   selCurrency,
-  changeSort,
+  handleSortClick,
+  sortInfo,
   ...otherProps
 }) => {
   return (
     <Table>
       <TableHead>
         <TableRow>
-          <HeaderCell onClick={() => changeSort("rank")}>
-            <Label>Cryptocurrency</Label>
-          </HeaderCell>
-          <HeaderCell>
-            <Label>Price</Label>
-          </HeaderCell>
-          <HeaderCell>
-            <Label>Market Cap</Label>
-          </HeaderCell>
-          <HeaderCell>
-            <Label>24H Change</Label>
-          </HeaderCell>
+          <ClickableHeader
+            label="Cryptocurrency"
+            columnKey={"rank"}
+            handleSortClick={handleSortClick}
+            sortInfo={sortInfo}
+          />
+          <ClickableHeader
+            label="Price"
+            columnKey={"price_usd"}
+            handleSortClick={handleSortClick}
+            sortInfo={sortInfo}
+          />
+          <ClickableHeader
+            label="Market Cap"
+            columnKey={"market_cap_usd"}
+            handleSortClick={handleSortClick}
+            sortInfo={sortInfo}
+          />
+          <ClickableHeader
+            label="24H Change"
+            columnKey={"percent_change_24h"}
+            handleSortClick={handleSortClick}
+            sortInfo={sortInfo}
+          />
         </TableRow>
       </TableHead>
       <TableBody>
@@ -109,21 +137,4 @@ const CurrenciesTable = ({
   );
 };
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    prop: state.prop
-  };
-};
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    changeSort: key => {
-      dispatch(changeSort(key));
-    }
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(CurrenciesTable));
+export default withRouter(CurrenciesTable);
