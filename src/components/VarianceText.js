@@ -5,7 +5,7 @@ import ArrowUp from "@material-ui/icons/ArrowUpwardRounded";
 import ArrowDown from "@material-ui/icons/ArrowDownwardRounded";
 
 const Text = styled.span`
-  margin-right: 0.1rem;
+  margin-right: 0.05rem;
 `;
 
 const Container = styled.div`
@@ -22,8 +22,11 @@ const Container = styled.div`
 `;
 
 const StyledVarianceIcon = styled.div`
+  height: 1em;
+  width: 1em;
   & > svg {
     max-height: 12px;
+    max-width: 12px;
   }
 `;
 

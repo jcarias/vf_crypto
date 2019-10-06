@@ -46,11 +46,16 @@ const HeaderCell = styled.th`
 const ClickableHeaderContainer = styled.div`
   display: flex;
   align-items: center;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.7);
+  &:hover {
+    color: rgba(0, 0, 0, 0.9);
+  }
 `;
 
 const ClickableHeader = ({ label, columnKey, handleSortClick, sortInfo }) => (
-  <HeaderCell onClick={() => handleSortClick(columnKey)}>
-    <ClickableHeaderContainer>
+  <HeaderCell>
+    <ClickableHeaderContainer onClick={() => handleSortClick(columnKey)}>
       <Label>{label}</Label>
       {sortInfo.sortKey === columnKey &&
         (sortInfo.sortAsc ? <SortUp /> : <SortDown />)}
@@ -71,8 +76,14 @@ const CurrenciesTable = ({
       <TableHead>
         <TableRow>
           <ClickableHeader
-            label="Cryptocurrency"
+            label="#"
             columnKey={"rank"}
+            handleSortClick={handleSortClick}
+            sortInfo={sortInfo}
+          />
+          <ClickableHeader
+            label="Cryptocurrency"
+            columnKey={"name"}
             handleSortClick={handleSortClick}
             sortInfo={sortInfo}
           />
@@ -100,6 +111,7 @@ const CurrenciesTable = ({
         {!isEmpty(cryptoCurrenciesList) &&
           cryptoCurrenciesList.map(cryptoCurr => (
             <TableRow
+              style={{ cursor: "pointer" }}
               hover
               key={cryptoCurr.id}
               onClick={() => {
@@ -107,7 +119,7 @@ const CurrenciesTable = ({
                 return otherProps.history.push(`/details/${cryptoCurr.id}`);
               }}
             >
-              <TableCell>
+              <TableCell colSpan={2}>
                 <CurrencyContainer>
                   <Label>{cryptoCurr.rank}</Label>
                   <IconContainer>

@@ -6,7 +6,6 @@ import isEqual from "lodash/isEqual";
 import styled from "styled-components";
 import ArrowBack from "@material-ui/icons/ArrowBackRounded";
 import CryptoCurrencyDetail from "./components/CryptoCurrencyDetail";
-import Label from "./components/Label";
 import CurrencyText from "./components/CurrencyText";
 import Loader from "./components/Loader";
 import { connect } from "react-redux";
@@ -62,7 +61,18 @@ const CurrencyIconContainer = styled.div`
   margin-right: 0.5rem;
 `;
 
-const InfoContainer = styled.div``;
+const InfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Symbol = styled.div`
+  margin-right: 0.1rem;
+  font-size: 0.8em;
+  font-weight: 600;
+  opacity: 0.4;
+  text-transform: uppercase;
+`;
 
 class CryptoCurrencyDetails extends Component {
   constructor(props) {
@@ -123,12 +133,8 @@ class CryptoCurrencyDetails extends Component {
               <CryptoCurrencyIcon symbol={currencyInfo.symbol} />
             </CurrencyIconContainer>
             <InfoContainer>
-              <div>
-                <span>{currencyInfo.name}</span>
-              </div>
-              <div>
-                <Label>{currencyInfo.symbol}</Label>
-              </div>
+              <span>{currencyInfo.name}</span>
+              <Symbol>{currencyInfo.symbol}</Symbol>
             </InfoContainer>
           </CurrencyContainer>
           <div>
