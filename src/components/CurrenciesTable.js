@@ -66,6 +66,12 @@ const ClickableHeaderContainer = styled.div`
   }
 `;
 
+const NoIconPlaceHolder = styled.div`
+  font-size: 24px;
+  height: 24px;
+  width: 24px;
+`;
+
 const ClickableHeader = ({
   label,
   columnKey,
@@ -80,12 +86,15 @@ const ClickableHeader = ({
       onClick={() => handleSortClick(columnKey)}
     >
       <Label>{label}</Label>
-      {sortInfo.sortKey === columnKey &&
-        (sortInfo.sortAsc ? (
+      {sortInfo.sortKey === columnKey ? (
+        sortInfo.sortAsc ? (
           <SortUp color="inherit" />
         ) : (
           <SortDown color="inherit" />
-        ))}
+        )
+      ) : (
+        <NoIconPlaceHolder />
+      )}
     </ClickableHeaderContainer>
   </HeaderCell>
 );
