@@ -53,11 +53,10 @@ const CurrencyContainer = styled.div`
   justify-content: flex-start;
 `;
 
-const iconSize = 36;
 const CurrencyIconContainer = styled.div`
-  font-size: ${iconSize}px;
-  width: ${iconSize}px;
-  height: ${iconSize}px;
+  font-size: ${props => props.iconSize || "36"}px;
+  width: ${props => props.iconSize || "36"}px;
+  height: ${props => props.iconSize || "36"}px;
   margin-right: 0.5rem;
 `;
 
@@ -72,6 +71,13 @@ const Symbol = styled.div`
   font-weight: 600;
   opacity: 0.4;
   text-transform: uppercase;
+`;
+
+const DetailEmbellishment = styled.div`
+  opacity: 0.5;
+  position: fixed;
+  right: 2em;
+  bottom: 2em;
 `;
 
 class CryptoCurrencyDetails extends Component {
@@ -129,7 +135,7 @@ class CryptoCurrencyDetails extends Component {
             <ArrowBack />
           </BackButton>
           <CurrencyContainer>
-            <CurrencyIconContainer>
+            <CurrencyIconContainer iconSize="40">
               <CryptoCurrencyIcon symbol={currencyInfo.symbol} />
             </CurrencyIconContainer>
             <InfoContainer>
