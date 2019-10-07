@@ -7,12 +7,14 @@ import {
 } from "./actionCreators";
 import { dummyData } from "./DummyData";
 
-/** Local constants*/
+/** Local constants:*/
+//TODO: put these constants in a .env file prior to production
 const CURRENCIES_LIMIT = 10;
 const POLL_INTERVAL = 60000;
 
 /** function that returns an axios call */
 const fetchCryptoCurrencyData = selectedCurrency =>
+  //TODO: put the endpoint constants in a .env file prior to production
   axios.request({
     method: "get",
     url: `https://api.coinmarketcap.com/v1/ticker/?limit=${CURRENCIES_LIMIT}&convert=${selectedCurrency}`
@@ -26,8 +28,11 @@ function* fetchDataEffectSaga(payload) {
       yield put(requestCryptoCurrencyData());
       let { data } = yield call(fetchCryptoCurrencyData, payload);
       yield put(updateCryptoCurrencyData(data));
+      //Waits an amount of time...
       yield delay(POLL_INTERVAL);
     } catch (err) {
+      //TODO: DELETE THIS BEFORE GOING LIVE!! (this is just mock data used to circumvent API usage limitations)
+      console.error(err);
       yield put(updateCryptoCurrencyData(dummyData));
       yield put({
         type: "ON_FETCH_ERROR",

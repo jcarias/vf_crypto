@@ -26,22 +26,26 @@ class CurrenciesList extends Component {
   }
 
   componentDidMount() {
+    //Start polling the API
     this.props.start(this.state.currentCurrency);
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.currentCurrency !== this.state.currentCurrency) {
+      //Stop && Start polling the API when a new fiat currency is selected
       this.props.stop();
       this.props.start(this.state.currentCurrency);
     }
   }
 
   componentWillUnmount() {
+    //Stops poling when leaving the list component
     this.props.stop();
   }
 
   handleCurrencyChange = newCurrency => {
     if (newCurrency !== this.state.currentCurrency) {
+      //The selected currency should be placed in the Reducer
       this.setState({ currentCurrency: newCurrency.target.value });
     }
   };

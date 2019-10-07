@@ -1,68 +1,43 @@
+# VF Crypto
+
+## About
+
+This is SPA React App to monitor to crypto currencies. It's goal was to accomplish a technical exercise, and to showcase my grasp of ReactJS.
+
+It relies on the API [CoinMarketCap](https://coinmarketcap.com/api/) (V1) to supply the data.
+The crypto currency icons used are from [https://github.com/atomiclabs/cryptocurrency-icons/]
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## App Structure
 
-In the project directory, you can run:
+The App has two main screens (Container components), a List of top ranked currencies and a details screen for a selected currency. Those screens will be referred to as Pages. The main source of the state is granted by a state manager: [Redux](https://redux.js.org/).
 
-### `npm start`
+### The List Page
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+The list of crypto currencies page has it's data automatically refreshed every 60 seconds. To accomplish this, the first approach was to rely on `setInterval()` method of the DOM Window. Then, this was replaced by Saga Effects. This allowed more flexibility browser independence.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+The list can show the corresponding values in several fiat currencies and the columns can be sorted.
 
-### `npm test`
+### Details Page
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The details page relies primarily on a crypto currency existing on the list. Never the less, if the details page address is accessed directly, the page can fetch the data for that currency automatically.
 
-### `npm run build`
+### Other Information
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- To accelerate the development, a component library was used: [Material-UI](https://material-ui.com/).
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+- Most of the components developed from the scratch were styled using [Styled Components](https://www.styled-components.com).
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- For performance and encapsulation reasons, most of the data retrieved from the reducers was done using memoized Selectors ([Reselect](https://github.com/reduxjs/reselect)).
 
-### `npm run eject`
+## Next Steps
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+In order to prepare this app for production a few changes need to be made:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+- Put all the hard-coded constants (configs and API endpoints) into `.env` files.
+- Migrate the API to the next version because the current one is deprecated and it will be discontinued.
+- Improve the user experience with notifications when errors occur.
+- Allow the conversion to a specific fiat currency of the crypto currency being shown in the details page.
+- Have the fiat currency be applied application-wide.
+- Add localization (to strings and number formats).

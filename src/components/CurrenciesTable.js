@@ -72,6 +72,10 @@ const NoIconPlaceHolder = styled.div`
   width: 24px;
 `;
 
+const BigCurrencyText = styled(CurrencyText)`
+  font-size: 1.1em;
+`;
+
 const ClickableHeader = ({
   label,
   columnKey,
@@ -160,7 +164,7 @@ const CurrenciesTable = ({
                 return otherProps.history.push(`/details/${cryptoCurr.id}`);
               }}
             >
-              <TableCell></TableCell>
+              <TableCell />
               <TableCell align="right">
                 <Label>{cryptoCurr.rank}</Label>
               </TableCell>
@@ -173,22 +177,21 @@ const CurrenciesTable = ({
                 </CurrencyContainer>
               </TableCell>
               <TableCell>
-                <CurrencyText
+                <BigCurrencyText
                   currency={selCurrency}
                   value={cryptoCurr[`price_${selCurrency.toLowerCase()}`]}
-                  style={{ fontSize: "1.1em" }}
-                ></CurrencyText>
+                />
               </TableCell>
               <TableCell>
                 <CurrencyText
                   currency={selCurrency}
                   value={cryptoCurr[`market_cap_${selCurrency.toLowerCase()}`]}
-                ></CurrencyText>
+                />
               </TableCell>
               <TableCell align="right">
                 <VarianceText value={cryptoCurr.percent_change_24h} />
               </TableCell>
-              <TableCell></TableCell>
+              <TableCell />
             </TableRow>
           ))}
       </TableBody>

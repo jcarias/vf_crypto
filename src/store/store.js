@@ -4,7 +4,7 @@ import createSagaMiddleware from "redux-saga";
 import { createStore, compose, applyMiddleware, combineReducers } from "redux";
 import rootSaga from "./rootSaga";
 import CryptoReducer from "./CryptoReducer";
-import CurrenciesReducer from "./CurrenciesReducer";
+import FiatCurrenciesReducer from "./FiatCurrenciesReducer";
 
 /** Saga Middleware */
 const sagaMiddleware = createSagaMiddleware();
@@ -14,7 +14,7 @@ let middleWares = applyMiddleware(sagaMiddleware);
 
 /** Create redux store */
 const store = createStore(
-  combineReducers({ CryptoReducer, CurrenciesReducer }),
+  combineReducers({ CryptoReducer, FiatCurrenciesReducer }),
   compose(middleWares)
 );
 

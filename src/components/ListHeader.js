@@ -4,7 +4,7 @@ import Grid from "@material-ui/core/Grid";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import { getFiatCurrenciesList } from "../store/CurrenciesReducer";
+import { getFiatCurrenciesList } from "../store/FiatCurrenciesReducer";
 
 import styled from "styled-components";
 
@@ -43,8 +43,8 @@ const ListHeader = ({ selCurrency, handleCurrencyChange, ...otherProps }) => {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    currenciesMap: state.CurrenciesReducer,
-    currenciesList: getFiatCurrenciesList(state.CurrenciesReducer)
+    currenciesMap: state.FiatCurrenciesReducer,
+    currenciesList: getFiatCurrenciesList(state.FiatCurrenciesReducer)
   };
 };
 

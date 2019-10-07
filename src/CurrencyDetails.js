@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import Axios from "axios";
 import isEmpty from "lodash/isEmpty";
-import isEqual from "lodash/isEqual";
 import styled from "styled-components";
 import ArrowBack from "@material-ui/icons/ArrowBackRounded";
 import CryptoCurrencyDetail from "./components/CryptoCurrencyDetail";
@@ -73,41 +72,31 @@ const Symbol = styled.div`
   text-transform: uppercase;
 `;
 
-const DetailEmbellishment = styled.div`
-  opacity: 0.5;
-  position: fixed;
-  right: 2em;
-  bottom: 2em;
-`;
-
 class CryptoCurrencyDetails extends Component {
   constructor(props) {
     super(props);
-    this.state = { cryptoCurrency: {} };
+    this.state = { cryptoCurrency: {}, isLoading: false };
   }
 
   componentDidMount() {
     if (isEmpty(this.props.selectedCurrency)) {
+      // Fallback if no currency has been selected in the details (e.g. if link is used directly)
       this.fetchNotFoundCurrency();
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (!isEqual(prevProps.selectedCurrency, this.props.selectedCurrency)) {
-      if (isEmpty(this.props.selectedCurrency)) {
-        this.fetchNotFoundCurrency();
-      }
-    }
-  }
-
   fetchNotFoundCurrency = () => {
+    //This endpoint must be defined in a .env file in production
+    this.setState({ isLoading: true });
     Axios.get(
       `https://api.coinmarketcap.com/v1/ticker/${this.props.match.params.id}/`
     )
       .then(response => {
-        this.setState({ cryptoCurrency: response.data[0] });
+        this.setState({ cryptoCurrency: response.data[0], isLoading: false });
       })
       .catch(err => {
+        //TODO: show an user friendly message when error occurs
+        this.setState({ isLoading: false });
         console.error(err);
         this.props.history.push("/");
       });
@@ -118,40 +107,39 @@ class CryptoCurrencyDetails extends Component {
   };
 
   render() {
-    let currencyInfo = this.props.selectedCurrency;
-
-    if (isEmpty(currencyInfo)) {
-      currencyInfo = this.state.cryptoCurrency;
-    }
-
-    if (isEmpty(currencyInfo)) {
-      return <Loader />;
-    }
+    const currencyInfo = !isEmpty(this.props.selectedCurrency)
+      ? this.props.selectedCurrency
+      : this.state.cryptoCurrency;
 
     return (
-      <div>
-        <HeaderContainer>
-          <BackButton onClick={this.handleBackButtonClick}>
-            <ArrowBack />
-          </BackButton>
-          <CurrencyContainer>
-            <CurrencyIconContainer iconSize="40">
-              <CryptoCurrencyIcon symbol={currencyInfo.symbol} />
-            </CurrencyIconContainer>
-            <InfoContainer>
-              <span>{currencyInfo.name}</span>
-              <Symbol>{currencyInfo.symbol}</Symbol>
-            </InfoContainer>
-          </CurrencyContainer>
-          <div>
-            <HeaderPrice>
-              <CurrencyText currency="USD" value={currencyInfo.price_usd} />
-            </HeaderPrice>
-          </div>
-        </HeaderContainer>
+      <React.Fragment>
+        {this.state.isLoading && <Loader />}
+        {isEmpty(currencyInfo) || (
+          <React.Fragment>
+            <HeaderContainer>
+              <BackButton onClick={this.handleBackButtonClick}>
+                <ArrowBack />
+              </BackButton>
+              <CurrencyContainer>
+                <CurrencyIconContainer iconSize="40">
+                  <CryptoCurrencyIcon symbol={currencyInfo.symbol} />
+                </CurrencyIconContainer>
+                <InfoContainer>
+                  <span>{currencyInfo.name}</span>
+                  <Symbol>{currencyInfo.symbol}</Symbol>
+                </InfoContainer>
+              </CurrencyContainer>
+              <div>
+                <HeaderPrice>
+                  <CurrencyText currency="USD" value={currencyInfo.price_usd} />
+                </HeaderPrice>
+              </div>
+            </HeaderContainer>
 
-        <CryptoCurrencyDetail cryptoCurrency={currencyInfo} />
-      </div>
+            <CryptoCurrencyDetail cryptoCurrency={currencyInfo} />
+          </React.Fragment>
+        )}
+      </React.Fragment>
     );
   }
 }
