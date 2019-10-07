@@ -8,6 +8,9 @@ import { getFiatCurrenciesList } from "../store/CurrenciesReducer";
 
 import styled from "styled-components";
 
+const Container = styled.div`
+  padding: 1em 2em;
+`;
 const BrandTitle = styled.span`
   font-size: 1.5em;
   color: rgba(0, 0, 0, 0.5);
@@ -16,27 +19,25 @@ const BrandTitle = styled.span`
 const ListHeader = ({ selCurrency, handleCurrencyChange, ...otherProps }) => {
   const { currenciesList } = otherProps;
   return (
-    <Grid container>
-      <Grid item xs>
-        <BrandTitle>VF Crypto</BrandTitle>
+    <Container>
+      <Grid container>
+        <Grid item xs>
+          <BrandTitle>VF Crypto</BrandTitle>
+        </Grid>
+        <Grid item xs={1}>
+          <FormControl fullWidth>
+            <Select value={selCurrency} onChange={handleCurrencyChange}>
+              {currenciesList.map((currency, index) => (
+                <MenuItem key={index} value={currency.code}>
+                  {currency.code}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={2}></Grid>
       </Grid>
-      <Grid item xs></Grid>
-      <Grid item>
-        <FormControl>
-          <Select
-            value={selCurrency}
-            onChange={handleCurrencyChange}
-            style={{ minWidth: 200 }}
-          >
-            {currenciesList.map((currency, index) => (
-              <MenuItem key={index} value={currency.code}>
-                {currency.code}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </Grid>
-    </Grid>
+    </Container>
   );
 };
 

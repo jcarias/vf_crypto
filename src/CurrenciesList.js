@@ -4,9 +4,18 @@ import Grid from "@material-ui/core/Grid";
 import ListHeader from "./components/ListHeader";
 import CurrenciesTable from "./components/CurrenciesTable";
 import { getLastUpdateTime, sortedDataSelector } from "./store/CryptoReducer";
-import { Typography } from "@material-ui/core";
 import { changeSort, selectCurrency } from "./store/actionCreators";
 import Loader from "./components/Loader";
+import style from "styled-components";
+
+const TimeStamp = style.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 0.6em;
+  color: #0000007F;
+  padding: 1em;
+`;
 
 class CurrenciesList extends Component {
   constructor(props) {
@@ -66,12 +75,16 @@ class CurrenciesList extends Component {
               handleSortClick={changeSort}
               sortInfo={sortInfo}
               handelRowSelect={selectCurrency}
+              isLoading={isLoading}
             />
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="caption" color="textSecondary" align="right">
-              Last update: <strong>{new Date(lastUpdate).toISOString()}</strong>
-            </Typography>
+            <TimeStamp>
+              <span>
+                Last update:{" "}
+                <strong>{new Date(lastUpdate).toISOString()}</strong>
+              </span>
+            </TimeStamp>
           </Grid>
         </Grid>
       </React.Fragment>

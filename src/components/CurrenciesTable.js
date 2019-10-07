@@ -11,7 +11,7 @@ import SortUp from "@material-ui/icons/ArrowDropUp";
 import SortDown from "@material-ui/icons/ArrowDropDown";
 
 import CryptoCurrencyIcon from "../assets/images";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Label from "./Label";
 
 const Table = styled.table`
@@ -20,6 +20,12 @@ const Table = styled.table`
   border-spacing: 0;
   border-collapse: collapse;
   margin-top: 1em;
+  filter: blur(0px);
+  ${props =>
+    props.isLoading &&
+    css`
+      filter: blur(4px);
+    `};
 `;
 
 const CurrencyContainer = styled.div`
@@ -31,10 +37,15 @@ const IconContainer = styled.div`
   font-size: 24px;
   height: 24px;
   margin-right: 1rem;
-  margin-left: 1em;
+`;
+
+const NameContainer = styled.div`
+  white-space: nowrap;
+  font-weight: 500;
 `;
 
 const HeaderCell = styled.th`
+  white-space: nowrap;
   background-color: #ebf0f4;
   border-top: 1px solid #d5e1ea;
   border-bottom: 1px solid #d5e1ea;
@@ -48,17 +59,33 @@ const ClickableHeaderContainer = styled.div`
   align-items: center;
   cursor: pointer;
   color: rgba(0, 0, 0, 0.7);
+  justify-content: ${props => props.alignment || "inherit"};
+
   &:hover {
     color: rgba(0, 0, 0, 0.9);
   }
 `;
 
-const ClickableHeader = ({ label, columnKey, handleSortClick, sortInfo }) => (
-  <HeaderCell>
-    <ClickableHeaderContainer onClick={() => handleSortClick(columnKey)}>
+const ClickableHeader = ({
+  label,
+  columnKey,
+  handleSortClick,
+  sortInfo,
+  alignment,
+  ...rest
+}) => (
+  <HeaderCell {...rest}>
+    <ClickableHeaderContainer
+      alignment={alignment}
+      onClick={() => handleSortClick(columnKey)}
+    >
       <Label>{label}</Label>
       {sortInfo.sortKey === columnKey &&
-        (sortInfo.sortAsc ? <SortUp /> : <SortDown />)}
+        (sortInfo.sortAsc ? (
+          <SortUp color="inherit" />
+        ) : (
+          <SortDown color="inherit" />
+        ))}
     </ClickableHeaderContainer>
   </HeaderCell>
 );
@@ -69,13 +96,16 @@ const CurrenciesTable = ({
   handleSortClick,
   sortInfo,
   handelRowSelect,
+  isLoading,
   ...otherProps
 }) => {
   return (
-    <Table>
+    <Table isLoading={isLoading}>
       <TableHead>
         <TableRow>
+          <HeaderCell width="15%"></HeaderCell>
           <ClickableHeader
+            alignment="flex-end"
             label="#"
             columnKey={"rank"}
             handleSortClick={handleSortClick}
@@ -100,11 +130,13 @@ const CurrenciesTable = ({
             sortInfo={sortInfo}
           />
           <ClickableHeader
+            alignment="flex-end"
             label="24H Change"
             columnKey={"percent_change_24h"}
             handleSortClick={handleSortClick}
             sortInfo={sortInfo}
           />
+          <HeaderCell width="15%"></HeaderCell>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -119,13 +151,16 @@ const CurrenciesTable = ({
                 return otherProps.history.push(`/details/${cryptoCurr.id}`);
               }}
             >
-              <TableCell colSpan={2}>
+              <TableCell></TableCell>
+              <TableCell align="right">
+                <Label>{cryptoCurr.rank}</Label>
+              </TableCell>
+              <TableCell>
                 <CurrencyContainer>
-                  <Label>{cryptoCurr.rank}</Label>
                   <IconContainer>
                     <CryptoCurrencyIcon symbol={cryptoCurr.symbol} />
                   </IconContainer>
-                  <div>{cryptoCurr.name}</div>
+                  <NameContainer>{cryptoCurr.name}</NameContainer>
                 </CurrencyContainer>
               </TableCell>
               <TableCell>
@@ -141,9 +176,10 @@ const CurrenciesTable = ({
                   value={cryptoCurr[`market_cap_${selCurrency.toLowerCase()}`]}
                 ></CurrencyText>
               </TableCell>
-              <TableCell>
+              <TableCell align="right">
                 <VarianceText value={cryptoCurr.percent_change_24h} />
               </TableCell>
+              <TableCell></TableCell>
             </TableRow>
           ))}
       </TableBody>

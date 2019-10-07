@@ -4,13 +4,10 @@ import { percentFormatter } from "../utils";
 import ArrowUp from "@material-ui/icons/ArrowUpwardRounded";
 import ArrowDown from "@material-ui/icons/ArrowDownwardRounded";
 
-const Text = styled.span`
-  margin-right: 0.05rem;
-`;
-
 const Container = styled.div`
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   color: green;
   font-size: 0.8em;
   font-weight: 600;
@@ -21,6 +18,9 @@ const Container = styled.div`
     `};
 `;
 
+const Text = styled.span`
+  margin-right: 0.05rem;
+`;
 const StyledVarianceIcon = styled.div`
   height: 1em;
   width: 1em;
