@@ -6,12 +6,14 @@ import {
   UPDATE_CRYPTO_CURR_DATA,
   CHANGE_SORT,
   SELECT_CURRENCY,
-  REQUEST_CRYPTO_CURR_DATA
+  REQUEST_CRYPTO_CURR_DATA,
+  UPDATE_FIAT_CURRENCY
 } from "./actionConstants";
 
 /* Reducer */
 export default (
   state = {
+    fiatCurrency: "USD",
     status: "Stopped",
     seconds: 0,
     timeStamp: new Date().getTime(),
@@ -47,6 +49,8 @@ export default (
       return { ...state, sortInfo: newSortInfo };
     case SELECT_CURRENCY:
       return { ...state, selectedId: action.id };
+    case UPDATE_FIAT_CURRENCY:
+      return { ...state, fiatCurrency: action.fiatCurrency };
     default:
       return state;
   }

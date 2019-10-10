@@ -79,7 +79,7 @@ class CryptoCurrencyDetails extends Component {
   }
 
   componentDidMount() {
-    if (isEmpty(this.props.selectedCurrency)) {
+    if (isEmpty(this.props.selectedCryptoCurrency)) {
       // Fallback if no currency has been selected in the details (e.g. if link is used directly)
       this.fetchNotFoundCurrency();
     }
@@ -107,10 +107,11 @@ class CryptoCurrencyDetails extends Component {
   };
 
   render() {
-    const currencyInfo = !isEmpty(this.props.selectedCurrency)
-      ? this.props.selectedCurrency
+    const currencyInfo = !isEmpty(this.props.selectedCryptoCurrency)
+      ? this.props.selectedCryptoCurrency
       : this.state.cryptoCurrency;
 
+    const fiatCurrency = this.props.fiatCurrency || "USD";
     return (
       <React.Fragment>
         {this.state.isLoading && <Loader />}
@@ -131,12 +132,18 @@ class CryptoCurrencyDetails extends Component {
               </CurrencyContainer>
               <div>
                 <HeaderPrice>
-                  <CurrencyText currency="USD" value={currencyInfo.price_usd} />
+                  <CurrencyText
+                    currency={fiatCurrency}
+                    value={currencyInfo[`price_${fiatCurrency.toLowerCase()}`]}
+                  />
                 </HeaderPrice>
               </div>
             </HeaderContainer>
 
-            <CryptoCurrencyDetail cryptoCurrency={currencyInfo} />
+            <CryptoCurrencyDetail
+              cryptoCurrency={currencyInfo}
+              fiatCurrency={fiatCurrency}
+            />
           </React.Fragment>
         )}
       </React.Fragment>
@@ -146,7 +153,7 @@ class CryptoCurrencyDetails extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    selectedCurrency: chosenCurrencySelector(state.CryptoReducer)
+    selectedCryptoCurrency: chosenCurrencySelector(state.CryptoReducer)
   };
 };
 export default connect(mapStateToProps)(withRouter(CryptoCurrencyDetails));

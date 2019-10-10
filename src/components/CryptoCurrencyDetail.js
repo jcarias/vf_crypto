@@ -71,7 +71,11 @@ const RankIndicator = styled.div`
   border-radius: 50%;
 `;
 
-const CryptoCurrencyDetail = ({ cryptoCurrency, ...otherProps }) => {
+const CryptoCurrencyDetail = ({
+  cryptoCurrency,
+  fiatCurrency,
+  ...otherProps
+}) => {
   return (
     <Container>
       {cryptoCurrency && (
@@ -88,8 +92,10 @@ const CryptoCurrencyDetail = ({ cryptoCurrency, ...otherProps }) => {
                 <DetailInfoContainerRows>
                   <LabelText>Market Cap</LabelText>
                   <StyleCurrencyText
-                    value={cryptoCurrency.market_cap_usd}
-                    currency="USD"
+                    value={
+                      cryptoCurrency[`market_cap_${fiatCurrency.toLowerCase()}`]
+                    }
+                    currency={fiatCurrency}
                   ></StyleCurrencyText>
                 </DetailInfoContainerRows>
               </Grid>
@@ -97,8 +103,10 @@ const CryptoCurrencyDetail = ({ cryptoCurrency, ...otherProps }) => {
                 <DetailInfoContainerRows>
                   <LabelText>24h Volume</LabelText>
                   <StyleCurrencyText
-                    value={cryptoCurrency["24h_volume_usd"]}
-                    currency="USD"
+                    value={
+                      cryptoCurrency[`24h_volume_${fiatCurrency.toLowerCase()}`]
+                    }
+                    currency={fiatCurrency}
                   ></StyleCurrencyText>
                 </DetailInfoContainerRows>
               </Grid>

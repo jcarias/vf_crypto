@@ -105,11 +105,11 @@ const ClickableHeader = ({
 
 const CurrenciesTable = ({
   cryptoCurrenciesList,
-  selCurrency,
+  fiatCurrencySelected,
   handleSortClick,
   sortInfo,
-  handelRowSelect,
   isLoading,
+  handleRowSelect,
   ...otherProps
 }) => {
   return (
@@ -160,7 +160,7 @@ const CurrenciesTable = ({
               hover
               key={cryptoCurr.id}
               onClick={() => {
-                handelRowSelect(cryptoCurr.id);
+                handleRowSelect(cryptoCurr.id);
                 return otherProps.history.push(`/details/${cryptoCurr.id}`);
               }}
             >
@@ -178,14 +178,20 @@ const CurrenciesTable = ({
               </TableCell>
               <TableCell>
                 <BigCurrencyText
-                  currency={selCurrency}
-                  value={cryptoCurr[`price_${selCurrency.toLowerCase()}`]}
+                  currency={fiatCurrencySelected}
+                  value={
+                    cryptoCurr[`price_${fiatCurrencySelected.toLowerCase()}`]
+                  }
                 />
               </TableCell>
               <TableCell>
                 <CurrencyText
-                  currency={selCurrency}
-                  value={cryptoCurr[`market_cap_${selCurrency.toLowerCase()}`]}
+                  currency={fiatCurrencySelected}
+                  value={
+                    cryptoCurr[
+                      `market_cap_${fiatCurrencySelected.toLowerCase()}`
+                    ]
+                  }
                 />
               </TableCell>
               <TableCell align="right">
