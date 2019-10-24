@@ -2,7 +2,7 @@
 
 ## About
 
-This is SPA React App to monitor to crypto currencies. It's goal was to accomplish a technical exercise, and to showcase my grasp of ReactJS.
+This is SPA React App to monitor to crypto currencies. It's goal was to accomplish a technical exercise, and to showcase my grasp of ReactJS. [See it in action](https://jcarias.github.io/vf_crypto/)!
 
 It relies on the API [CoinMarketCap](https://coinmarketcap.com/api/) (V1) to supply the data.
 The crypto currency icons used are from [https://github.com/atomiclabs/cryptocurrency-icons/]
